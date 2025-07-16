@@ -29,7 +29,7 @@ app.use(express.json());
 
 let port = process.env.PORT || 9000;
 app.get((req, res) => {
-  res.send(console.log("hello"));
+  res.send('Hello World')
 });
 
 app.use("/api",indexRoute)
