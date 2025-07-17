@@ -10,12 +10,24 @@ import indexRoute from "./route/index.route.js";
 dotenv.config();
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://client-zepto.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "https://client-zepto.vercel.app", // Your front-end origin
-    credentials: true, // Allow cookies
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
+
 app.use(morgan('tiny'));
 app.use(
   helmet({
