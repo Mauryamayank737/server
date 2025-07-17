@@ -121,6 +121,14 @@ export const decCartItem = async (req, res) => {
       });
     }
 
+    if(existingCartItem.quantity === 1){
+      const updatedCartItem = await CartProductModel.findOneAndUpdate(
+        { _id: existingCartItem._id },
+        { $inc: { quantity: -1 } }, // Use $inc to decrement
+        { new: true } // Return the updated document
+      );
+    }
+
     await CartProductModel.findByIdAndDelete(existingCartItem._id);
 
     await UserModel.findByIdAndUpdate(userId, {
