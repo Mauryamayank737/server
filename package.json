@@ -5,10 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
-    "vercel-build": "echo 'No build step needed'"
-  },
+  "dev": "nodemon index.js",
+  "start": "node index.js",
+  "build": "echo 'skipping build step'",
+  "vercel-build": "npm run build"
+},
   "engines": {
     "node": ">=18.x"
   },
