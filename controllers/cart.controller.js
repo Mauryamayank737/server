@@ -108,10 +108,7 @@ export const decCartItem = async (req, res) => {
       });
     }
 
-    const existingCartItem = await CartProductModel.findOne({
-      userId,
-      productId,
-    });
+    const existingCartItem = await CartProductModel.findOne({ userId, productId });
 
     if (!existingCartItem) {
       return res.status(404).json({
@@ -121,14 +118,23 @@ export const decCartItem = async (req, res) => {
       });
     }
 
-    if(existingCartItem.quantity === 1){
-      const updatedCartItem = await CartProductModel.findOneAndUpdate(
-        { _id: existingCartItem._id },
-        { $inc: { quantity: -1 } }, // Use $inc to decrement
-        { new: true } // Return the updated document
+    // ✅ If quantity > 1: just decrement
+    if (existingCartItem.quantity > 1) {
+      const updatedCartItem = await CartProductModel.findByIdAndUpdate(
+        existingCartItem._id,
+        { $inc: { quantity: -1 } },
+        { new: true }
       );
+
+      return res.status(200).json({
+        data: updatedCartItem,
+        message: "Item quantity decreased",
+        error: false,
+        success: true,
+      });
     }
 
+    // ✅ If quantity === 1: remove item
     await CartProductModel.findByIdAndDelete(existingCartItem._id);
 
     await UserModel.findByIdAndUpdate(userId, {
@@ -141,7 +147,7 @@ export const decCartItem = async (req, res) => {
       error: false,
       success: true,
     });
-    
+
   } catch (error) {
     console.error("Decrement cart item error:", error);
     return res.status(500).json({
@@ -152,12 +158,13 @@ export const decCartItem = async (req, res) => {
   }
 };
 
+
 export const deleteOneCart = async (req, res) => {
   try {
     const { productId } = req.body;
     const userId = req.userId;
 
-    // Validate input
+    
     if (!productId) {
       return res.status(400).json({
         message: "Product ID is required",
