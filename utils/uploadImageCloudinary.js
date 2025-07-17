@@ -13,9 +13,7 @@ cloudinary.config({
 export const uploadImageCloudinary = (buffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: 'avatars', // Optional: Cloudinary folder
-      },
+      { folder: 'avatars' }, // optional: saves in Cloudinary folder
       (error, result) => {
         if (error) return reject(error);
         resolve(result);
@@ -24,4 +22,3 @@ export const uploadImageCloudinary = (buffer) => {
     streamifier.createReadStream(buffer).pipe(stream);
   });
 };
-

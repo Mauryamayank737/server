@@ -5,11 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-  "dev": "nodemon index.js",
-  "start": "node index.js",
-  "build": "echo 'skipping build step'",
-  "vercel-build": "npm run build"
-},
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "echo 'skipping build step'",
+    "vercel-build": "npm run build"
+  },
   "engines": {
     "node": ">=18.x"
   },
@@ -30,7 +30,8 @@
     "mongoose": "^8.13.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.2",
-    "nodemailer": "^6.10.1"
+    "nodemailer": "^6.10.1",
+    "streamifier": "^0.1.1"
   },
   "devDependencies": {
     "@vercel/node": "^3.0.0",

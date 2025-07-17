@@ -2,10 +2,10 @@ import UserModel from "../model/User.model.js";
 import bcrypt from "bcryptjs";
 import { generatedAccessToken } from "../utils/generateAccessToken.js";
 import { generatedRefreshToken } from "../utils/generatedRefreshToken.js";
-import { uploadImageClodinary } from "../utils/uploadImageCloudinary.js";
 import fs from "fs";
 import { otpModel } from "../model/otp.js";
 import { sendOtp } from "../utils/sendOtp.js";
+import { uploadImageCloudinary } from "../utils/uploadImageCloudinary.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -270,7 +270,7 @@ export const uploadAvatar = async (req, res) => {
     const userId = req.userId;
     const image = req.file;
     // console.log(image ,"image")
-    const url = await uploadImageClodinary(image);
+    const url = await uploadImageCloudinary(image);
 
     console.log("image", url);
 
