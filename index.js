@@ -25,17 +25,26 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-// app.use(fileUpload())
 
-
-let port = process.env.PORT || 9000;
-app.get('/',(req, res) => {
-  res.send('Hello World')
+app.get('/', (req, res) => {
+  res.send('Hello World');
 });
 
-app.use("/api",indexRoute)
+app.use("/api", indexRoute);
 
-app.listen(port, async(req, res) => {
-  await DataBaseConnection();
-  console.log(`server is running on http://localhost:${port}`);
-});
+const port = process.env.PORT || 9000;
+
+// ✅ Start server only after DB connection
+const startServer = async () => {
+  try {
+    await DataBaseConnection();
+    app.listen(port, () => {
+      console.log(`🚀 Server is running on http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error("❌ Failed to connect to database:", error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
