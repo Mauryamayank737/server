@@ -267,9 +267,11 @@ export const verification_email = async (req, res, next) => {
 
 export const uploadAvatar = async (req, res) => {
   try {
+    console.log(req.body)
+    console.log(req.file)
     const userId = req.userId;
     const image = req.file;
-    // console.log(image ,"image")
+    console.log(image ,"image")
     const url = await uploadImageCloudinary(image);
 
     console.log("image", url);

@@ -2,27 +2,27 @@ import { uploadImageCloudinary } from '../utils/uploadImageCloudinary.js';
 
 export const uploadImageController = async (req, res) => {
   try {
-    const file = req.file;
-
-    if (!file) {
-      return res.status(400).json({
-        success: false,
-        message: 'No file uploaded',
-      });
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
     }
 
-    const result = await uploadImageCloudinary(file.buffer);
+    // console.log("Processing file:", {
+    //   name: req.file.originalname,
+    //   size: req.file.size,
+    //   type: req.file.mimetype
+    // });
 
+    const result = await uploadImageCloudinary(req.file);
+    
     res.status(200).json({
       success: true,
-      message: 'Image uploaded successfully',
-      data: result,
+      imageUrl: result.secure_url
     });
   } catch (error) {
-    console.error('Upload error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Upload failed',
+    console.error("Upload failed:", error.message);
+    res.status(500).json({ 
+      error: error.message || "Upload failed",
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };

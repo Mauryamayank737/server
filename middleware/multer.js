@@ -1,23 +1,24 @@
-import multer from 'multer';
+import multer from "multer";
 
-// Use memory storage so the file can be processed in memory
+// In your multer.js middleware
 const storage = multer.memoryStorage();
 
 export const upload = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // Optional: limit file size to 5MB
+    fileSize: 5 * 1024 * 1024, // 5MB
   },
   fileFilter: (req, file, cb) => {
-    // Optional: filter image types
-    if (
-      file.mimetype === 'image/jpeg' ||
-      file.mimetype === 'image/png' ||
-      file.mimetype === 'image/webp'
-    ) {
+    console.log('📥 File received:', {
+      name: file.originalname,
+      type: file.mimetype,
+      size: file.size
+    });
+
+    if (['image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only JPEG, PNG, and WEBP images are allowed'));
+      cb(new Error('Invalid file type'));
     }
   },
 });
