@@ -35,7 +35,7 @@ app.get('/',(req, res) => {
 
 app.use("/api",indexRoute)
 
-app.listen(port, (req, res) => {
-  DataBaseConnection();
+app.listen(port, async(req, res) => {
+  await DataBaseConnection();
   console.log(`server is running on http://localhost:${port}`);
 });
