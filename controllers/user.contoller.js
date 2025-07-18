@@ -267,44 +267,43 @@ export const verification_email = async (req, res, next) => {
 
 export const uploadAvatar = async (req, res) => {
   try {
-    console.log(req.body)
-    console.log(req.file)
     const userId = req.userId;
     const image = req.file;
-    console.log(image ,"image")
+    
+    if (!image) {
+      return res.status(400).json({
+        message: "No image file provided",
+        error: true,
+        success: false
+      });
+    }
+
+    // Upload to Cloudinary directly from memory buffer
     const url = await uploadImageCloudinary(image);
 
-    console.log("image", url);
-
-    fs.unlink(image.path, function (err) {
-      if (err) console.log(err);
-    });
+    // Skip filesystem deletion since we're using memory storage
+    // and Vercel automatically cleans up
 
     const userData = await UserModel.findByIdAndUpdate(
       userId,
-      {
-        avatar: url.url,
-      },
+      { avatar: url.secure_url }, // Use secure_url instead of url.url
       { new: true }
     );
-    // console.log(userData)
 
-    console.log("avatar uploaded successfuly... ");
     return res.status(200).json({
-      message: "Image Upload ",
+      message: "Image Uploaded Successfully",
       error: false,
       success: true,
-      body: {
-        url,
+      data: {
+        url: url.secure_url
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error("Upload error:", error);
     return res.status(500).json({
-      message: error.message || error,
+      message: error.message || "Image upload failed",
       error: true,
       success: false,
-      body: {},
     });
   }
 };

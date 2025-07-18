@@ -22,18 +22,17 @@ export const uploadImageCloudinary = async (file) => {
       {
         folder: "avatars",
         resource_type: "auto",
-        public_id: file.originalname.replace(/\.[^/.]+$/, "") // Remove extension
+        public_id: `${Date.now()}_${file.originalname.replace(/\.[^/.]+$/, "")}`, // Add timestamp for uniqueness
+        transformation: [
+          { width: 500, height: 500, crop: "limit" },
+          { quality: "auto" }
+        ]
       },
       (error, result) => {
         if (error) {
-          // console.error("Cloudinary upload error:", error);
-          reject(error);
+          console.error("Cloudinary upload error:", error);
+          reject(new Error("Failed to upload image to Cloudinary"));
         } else {
-          // console.log("Upload successful:", {
-          //   url: result.secure_url,
-          //   size: result.bytes,
-          //   format: result.format
-          //  });
           resolve(result);
         }
       }
