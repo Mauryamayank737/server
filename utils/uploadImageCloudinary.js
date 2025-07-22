@@ -42,4 +42,3 @@ export const uploadImageCloudinary = async (file) => {
     streamifier.createReadStream(file.buffer).pipe(uploadStream);
   });
 };
-
