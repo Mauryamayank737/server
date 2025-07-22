@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
+      "src": "index.js",
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
@@ -25,23 +25,16 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server.js"
+      "dest": "/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "client/dist/$1",
+      "dest": "/client/dist/$1",
       "headers": {
         "Cache-Control": "s-maxage=31536000, immutable"
       }
     }
   ],
-  "functions": {
-    "server.js": {
-      "memory": 3008,
-      "maxDuration": 30,
-      "runtime": "nodejs18.x"
-    }
-  },
   "env": {
     "NODE_ENV": "production"
   }
