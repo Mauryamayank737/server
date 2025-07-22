@@ -2,9 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 import dotenv from 'dotenv';
 
-dotenv.config(); // Load environment variables
-
-// Configure Cloudinary
+dotenv.config(); 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -16,6 +14,7 @@ export const uploadImageCloudinary = async (file) => {
   if (!file || !file.buffer) {
     throw new Error("No file buffer provided");
   }
+  console.log(process.env.API_KEY)
 
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
