@@ -10,9 +10,8 @@ import {
   UserDetail,
   verification_email,
 } from "../controllers/user.contoller.js";
-// import { auth } from '../middleware/auth.middleware.js'
-import { upload } from "../middleware/multer.js";
 import { auth } from "../middleware/auth.middleware.js";
+import { upload } from "../middleware/multer.js";
 const userRouter = express(Router);
 
 userRouter.post("/register", registerUser);
